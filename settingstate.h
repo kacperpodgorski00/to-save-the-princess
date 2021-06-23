@@ -1,21 +1,22 @@
 #pragma once
 
-#include "gamestate.h"
-#include "editorstate.h"
-#include "settingstate.h"
+#include "state.h"
 #include "gui.h"
 
-class MainMenuState : public State
+
+class SettingState : public State
 {
 public:
-    MainMenuState(StateData* state_data);
-    virtual ~MainMenuState();
+    SettingState(StateData* state_data);
+    virtual ~SettingState();
+
+    //Accessors
 
     //Functions
     void updateInput(const float& delta_time);
-    void updateButtons();
+    void updateGui(const float& delta_time);
     void update(const float& delta_time);
-    void renderButtons(sf::RenderTarget& target);
+    void renderGui(sf::RenderTarget& target);
     void render(sf::RenderTarget* target = nullptr);
 
 private:
@@ -25,13 +26,19 @@ private:
     sf::Font font;
 
     std::map<std::string, gui::Button*> buttons;
+    std::map<std::string, gui::DropDownList*> dropdownLists;
+
+    sf::Text optionsText;
+
+    std::vector<sf::VideoMode> modes;
 
     //Functions
     void initVariables();
     void initBackground();
     void initFonts();
     void initKeybinds();
-    void initButtons();
+    void initGui();
+    void initText();
 
 };
 

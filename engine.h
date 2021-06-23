@@ -28,11 +28,10 @@ public:
 
 private:
     //Variables
+    GraphicsSettings gfxSettings;
+    StateData stateData;
     sf::RenderWindow *window;
     sf::Event sfEvent;
-    std::vector<sf::VideoMode> videoModes;
-    sf::ContextSettings windowSettings;
-    bool fullscreen;
 
     sf::Clock delta_time_Clock;
     float delta_time;
@@ -41,10 +40,14 @@ private:
 
     std::map<std::string, int> supportedKeys;
 
+    float gridSize;
+
     //Initialization
     void initVariables();
+    void initGraphicsSettings();
     void initWindow();
     void initKeys();
+    void initStateData();
     void initStates();
 
 };

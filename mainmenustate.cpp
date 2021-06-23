@@ -1,7 +1,7 @@
 #include "mainmenustate.h"
 
-MainMenuState::MainMenuState(sf::RenderWindow* window, std::map<std::string, int>* supportedKeys, std::stack<State*>* states)
-    : State(window, supportedKeys, states)
+MainMenuState::MainMenuState(StateData* state_data)
+    : State(state_data)
 {
     this->initVariables();
     this->initBackground();
@@ -35,7 +35,19 @@ void MainMenuState::updateButtons()
     //New game
     if(this->buttons["GAME_STATE"]->isPressed())
     {
-        this->states->push(new GameState(this->window, this->supportedKeys, this->states));
+        this->states->push(new GameState(this->stateData));
+    }
+
+    //Settings
+    if(this->buttons["SETTINGS_STATE"]->isPressed())
+    {
+        this->states->push(new SettingState(this->stateData));
+    }
+
+    //Editor
+    if(this->buttons["EDITOR_STATE"]->isPressed())
+    {
+        this->states->push(new EditorState(this->stateData));
     }
 
     //Quit the game
@@ -53,7 +65,7 @@ void MainMenuState::update(const float& delta_time)
     this->updateButtons();
 }
 
-void MainMenuState::renderButtons(sf::RenderTarget *target)
+void MainMenuState::renderButtons(sf::RenderTarget& target)
 {
     for (auto &it : this->buttons)
     {
@@ -69,7 +81,7 @@ void MainMenuState::render(sf::RenderTarget* target)
     }
     target->draw(this->background);
 
-    this->renderButtons(target);
+    this->renderButtons(*target);
 
     //REMOVE LATER !!!
 //    sf::Text mouseText;
@@ -135,15 +147,23 @@ void MainMenuState::initKeybinds()
 void MainMenuState::initButtons()
 {
 
-    this->buttons["GAME_STATE"] = new Button(810, 250, 300, 50,
-        &this->font, "New Game",
-        sf::Color(70, 70, 70, 200), sf::Color(150, 150, 150, 255), sf::Color(20, 20, 20, 200));
+    this->buttons["GAME_STATE"] = new gui::Button(810.f, 150.f, 300.f, 50.f,
+        &this->font, "New Game", 50,
+        sf::Color(70, 70, 70, 200), sf::Color(250, 250, 250, 250), sf::Color(20, 20, 20, 50),
+        sf::Color(70, 70, 70, 0), sf::Color(150, 150, 150, 0), sf::Color(20, 20, 20, 0));
 
-    this->buttons["SETTINGS"] = new Button(810, 350, 300, 50,
-        &this->font, "Settings",
-        sf::Color(70, 70, 70, 200), sf::Color(150, 150, 150, 255), sf::Color(20, 20, 20, 200));
+    this->buttons["SETTINGS_STATE"] = new gui::Button(810.f, 250.f, 300.f, 50.f,
+        &this->font, "Settings", 50,
+        sf::Color(70, 70, 70, 200), sf::Color(250, 250, 250, 250), sf::Color(20, 20, 20, 50),
+        sf::Color(70, 70, 70, 0), sf::Color(150, 150, 150, 0), sf::Color(20, 20, 20, 0));
 
-    this->buttons["EXIT_STATE"] = new Button(810, 650, 300, 50,
-        &this->font, "Quit",
-        sf::Color(100, 100, 100, 200), sf::Color(150, 150, 150, 255), sf::Color(20, 20, 20, 200));
+    this->buttons["EDITOR_STATE"] = new gui::Button(810.f, 350.f, 300.f, 50.f,
+        &this->font, "Editor", 50,
+        sf::Color(70, 70, 70, 200), sf::Color(250, 250, 250, 250), sf::Color(20, 20, 20, 50),
+        sf::Color(70, 70, 70, 0), sf::Color(150, 150, 150, 0), sf::Color(20, 20, 20, 0));
+
+    this->buttons["EXIT_STATE"] = new gui::Button(810.f, 450.f, 300.f, 50.f,
+        &this->font, "Quit", 50,
+        sf::Color(70, 70, 70, 200), sf::Color(250, 250, 250, 250), sf::Color(20, 20, 20, 50),
+        sf::Color(100, 100, 100, 0), sf::Color(150, 150, 150, 0), sf::Color(20, 20, 20, 0));
 }
